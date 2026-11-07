@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: arrullo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./tienda-online/Dockerfile
+    dockerContext: ./tienda-online
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOCAL_SERVICES
+        value: "false"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: LOGIN_DB_NAME
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      - key: DB_SSL_CA
+        sync: false
+      - key: PAYMENT_MODE
+        value: simulator
+      - key: SHIPPING_MODE
+        value: simulator

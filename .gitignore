@@ -1,0 +1,28 @@
+# Dependencies and generated build output
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+
+# Local credentials and certificates
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+
+# Local databases, logs, caches, and virtual environments
+**/mysql-data*/
+**/database-backups/
+**/backups/
+**/respaldos/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.py[cod]
+**/*.log
+**/*.pid
+**/*.err
+**/.DS_Store

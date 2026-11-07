@@ -1,0 +1,8 @@
+{
+  "name": "arrullo-card-service",
+  "private": true,
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node original/probar-validador.mjs && node --test proof.test.cjs"
+  }
+}

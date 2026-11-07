@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS session_revocations (email VARCHAR(190) PRIMARY KEY,revoked_before BIGINT UNSIGNED NOT NULL) ENGINE=InnoDB;

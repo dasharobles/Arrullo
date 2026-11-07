@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arrullo · Logística de envíos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root{--arr-cream:#fff8ed;--arr-paper:#fffefa;--arr-ink:#51434b;--arr-muted:#746671;--arr-line:#f0e3dc;--arr-pink:#e98fa4;--arr-blue:#83b5d5;--arr-yellow:#f2ce68;--arr-green:#93c39b;--arr-green-deep:#547a67;--arr-sage:#e5f0e2;--arr-shadow:0 14px 34px rgba(109,79,93,.09)}
+      body{background:radial-gradient(ellipse at 5% 10%,rgba(196,177,216,.17),transparent 27rem),radial-gradient(ellipse at 96% 55%,rgba(131,181,213,.14),transparent 29rem),var(--arr-cream);color:var(--arr-ink);font-family:Nunito,system-ui,sans-serif}
+      .navbar.bg-dark{background:rgba(255,254,250,.95)!important;border-bottom:1px solid var(--arr-line);box-shadow:0 5px 18px rgba(109,79,93,.05)}.navbar-dark .navbar-brand{color:var(--arr-pink);font:600 23px Fredoka,sans-serif}.container.pb-4{max-width:1180px}
+      h1,h2,h3,.navbar-brand{font-family:Fredoka,sans-serif;color:var(--arr-ink)}.text-muted{color:var(--arr-muted)!important}.card,.table,.form-control,.form-select{border-color:var(--arr-line);border-radius:12px}.card,.table{background:var(--arr-paper);box-shadow:var(--arr-shadow)}.table thead.table-dark{--bs-table-bg:var(--arr-sage);--bs-table-color:var(--arr-green-deep);--bs-table-border-color:var(--arr-line)}
+      .btn-primary{--bs-btn-bg:var(--arr-pink);--bs-btn-border-color:var(--arr-pink);--bs-btn-hover-bg:#d97891;--bs-btn-hover-border-color:#d97891;--bs-btn-color:white;--bs-btn-active-bg:#c96985;border-radius:999px;font-family:Fredoka,sans-serif}.btn-secondary{--bs-btn-bg:var(--arr-green-deep);--bs-btn-border-color:var(--arr-green-deep);border-radius:999px}.btn-outline-secondary{--bs-btn-color:var(--arr-green-deep);--bs-btn-border-color:var(--arr-green);border-radius:999px}.form-control:focus,.form-select:focus{border-color:var(--arr-blue);box-shadow:0 0 0 .2rem rgba(131,181,213,.22)}
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('envios') }}">Arrullo <span class="fw-normal fs-6 text-secondary">· Envíos</span></a>
+    </div>
+</nav>
+
+<div class="container pb-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

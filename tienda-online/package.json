@@ -1,0 +1,20 @@
+{
+  "name": "arrullo-integrated-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API modular integrada para Arrullo e-commerce",
+  "scripts": {
+    "start": "node scripts/start-local.cjs",
+    "test": "node --test integration.test.js",
+    "db:setup": "node scripts/setup-database.js",
+    "start:hosted": "node scripts/start-hosted.cjs",
+    "db:export": "node scripts/export-hosting-db.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mysql2": "^3.24.4"
+  }
+}

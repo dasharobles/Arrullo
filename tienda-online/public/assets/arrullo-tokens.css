@@ -1,0 +1,27 @@
+/* Arrullo visual identity tokens. Fredoka is the closest rounded display match to the supplied wordmark. */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap");
+:root {
+  color-scheme: light;
+  --arrullo-cream: #FAF9F6;
+  --arrullo-paper: #FAF9F6;
+  --arrullo-ink: #222222;
+  --arrullo-muted: #5D5A58;
+  --arrullo-line: #f0e3dc;
+  --arrullo-pink: #F8A5C2;
+  --arrullo-pink-soft: #FCEBF0;
+  --arrullo-blue: #93B5C6;
+  --arrullo-blue-soft: #EAF2F5;
+  --arrullo-yellow: #FCE38A;
+  --arrullo-yellow-soft: #FEF7DC;
+  --arrullo-green: #A8E6CF;
+  --arrullo-green-deep: #426C5D;
+  --arrullo-sage: #E8F6F0;
+  --arrullo-lilac: #93B5C6;
+  --arrullo-lilac-soft: #EAF2F5;
+  --arrullo-coral: #F8A5C2;
+  --arrullo-shadow: 0 14px 34px rgba(109, 79, 93, .09);
+  --arrullo-brand-font: "Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --arrullo-body-font: "Nunito", "Trebuchet MS", system-ui, sans-serif;
+}
+
+

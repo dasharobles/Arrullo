@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');const {issueProof,readProof}=require('./proof.cjs');
+const key='clave-aislada-de-prueba-para-firma';const data={sub:1,cartId:'cart',quoteId:'quote',amountCents:56600,currency:'MXN',exp:Date.now()+60000,jti:'tok_sim_test'};
+test('comprobante se vincula a cliente, carrito, envío e importe',()=>{const t=issueProof(data,key);assert.equal(readProof(t,key,{sub:1,amountCents:56600}).jti,data.jti);for(const expected of [{sub:2},{cartId:'other'},{quoteId:'other'},{amountCents:1}])assert.throws(()=>readProof(t,key,expected),e=>e.status===402)});
+test('rechaza firma alterada, token inventado y expirado',()=>{const t=issueProof(data,key);for(const s of [t+'x','tok_demo_inventado',issueProof({...data,exp:1},key)])assert.throws(()=>readProof(s,key),e=>e.status===402)});

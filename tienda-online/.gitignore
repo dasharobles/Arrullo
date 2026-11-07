@@ -1,0 +1,20 @@
+node_modules/
+.env
+.env.*.local
+.env.*
+!.env.example
+mysql-data/
+mysql-data*/
+*.log
+.DS_Store
+
+# Entornos y configuración de microservicios locales
+**/.venv/
+**/.env
+**/.env.*
+!**/.env.example
+**/__pycache__/
+
+# Respaldos privados para migración
+database-backups/
+backups/
