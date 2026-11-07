@@ -2,7 +2,7 @@
 
 Tienda en línea para ropa de bebé, con catálogo por variantes, inventario, carrito, cuentas de clientes, pedidos y panel de administración. La aplicación integra servicios propios de acceso, logística y validación de pagos de demostración.
 
-> **Estado:** la ejecución local y las pruebas de integración están verificadas. Hay una configuración de despliegue para Render, pero el proyecto no está publicado ni tiene una base de datos de hosting configurada. El pago y la paquetería disponibles son simulados; no procesan cobros ni generan guías reales.
+> **Estado:** el repositorio está publicado en GitHub. La ejecución local y las pruebas de integración están verificadas; todavía no hay una base de datos alojada configurada. El pago y la paquetería disponibles son simulados; no procesan cobros ni generan guías reales.
 
 ## Funcionalidades
 
@@ -120,18 +120,6 @@ La validación de los documentos se ejecuta desde la raíz:
 python validar_documentacion.py
 ```
 
-## Preparación para hosting
-
-El manifiesto [render.yaml](render.yaml) y el Dockerfile preparan el servicio integrado para Render. Antes de desplegar:
-
-1. Provisiona una base MySQL externa compatible, persistente y con TLS. Crea y carga los esquemas de tienda y login en las bases configuradas; importa productos y el catálogo postal de forma controlada.
-2. En Render, configura `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `LOGIN_DB_NAME` y `DB_SSL_CA` con los datos del proveedor. Si ambas aplicaciones comparten base, configura los nombres de acuerdo con esa base y sus esquemas.
-3. La configuración de demostración usa `PAYMENT_MODE=simulator` y `SHIPPING_MODE=simulator`. No realiza cobros ni entrega pedidos reales.
-4. La recuperación de contraseña se deja pendiente y el proyecto no envía correos.
-5. Revisa salud, registro, inicio de sesión, permisos, catálogo y errores de conexión en el entorno de hosting. No declares el servicio en producción hasta revisar TLS, copias de seguridad y las políticas del proveedor.
-
-La aplicación no crea ni configura una base de datos alojada. `npm run db:export` genera respaldos con datos de cuentas y pedidos; esos archivos son privados, deben transferirse por un canal seguro y nunca subirse a GitHub.
-
 ## Seguridad y límites conocidos
 
 - No subas `.env`, certificados, claves, respaldos SQL, `node_modules`, entornos virtuales ni `mysql-data-local`.
@@ -144,7 +132,6 @@ La aplicación no crea ni configura una base de datos alojada. `npm run db:expor
 
 - [Guía de tienda y administración](tienda-online/README-ADMIN.md)
 - [Guía de despliegue](tienda-online/README-DEPLOY.md)
-- [Historial y recuperación](tienda-online/README-HISTORIAL-RECUPERACION.md)
 - [Inventario de servicios](documentacion/INVENTARIO_MICROSERVICIOS.md)
 - [Inventario frontend](documentacion/INVENTARIO_FRONTEND.md)
 - [Matriz de integración](documentacion/MATRIZ_INTEGRACION.md)
