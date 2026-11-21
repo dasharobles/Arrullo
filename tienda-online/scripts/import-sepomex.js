@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const file = process.argv[2];
 if (!file) { console.error('Indica la ruta del TXT oficial SEPOMEX.'); process.exit(2); }
 const text = fs.readFileSync(file, 'latin1').replace(/^\uFEFF/, '');
-const cfg = { host: process.env.DB_HOST || '127.0.0.1', port: Number(process.env.DB_PORT || 3306), user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '', database: process.env.DB_NAME || 'arrullo', ssl: process.env.DB_SSL==='true'?{rejectUnauthorized:true}:undefined };
+const cfg = { host: process.env.DB_HOST || '127.0.0.1', port: Number(process.env.DB_PORT || 3306), user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '', database: process.env.DB_NAME || 'arrullo', ssl: process.env.DB_SSL==='true'?{rejectUnauthorized:false}:undefined };
 const rows = text.split(/\r?\n/).filter(Boolean).map(line => line.split('|'));
 const data = rows.filter(r => /^\d{5}$/.test((r[0] || '').trim()) && (r[4] || '').trim().toLocaleLowerCase('es-MX') === 'sinaloa');
 if (!data.length) { console.error('El archivo no contiene filas reconocibles de Sinaloa; no se insertó nada.'); process.exit(1); }

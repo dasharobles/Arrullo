@@ -57,7 +57,7 @@ export const dbConfig = {
   queueLimit: 0,
   charset: 'utf8mb4_unicode_ci',
   timezone: 'Z',
-  ssl: variables.DB_SSL === 'true' ? { rejectUnauthorized: true, ...(variables.DB_SSL_CA ? {ca:variables.DB_SSL_CA.replace(/\\n/g,'\n')} : {}) } : undefined
+  ssl: variables.DB_SSL === 'true' ? { rejectUnauthorized: false, ...(variables.DB_SSL_CA ? {ca:variables.DB_SSL_CA.replace(/\\n/g,'\n')} : {}) } : undefined
 };
 
 export const esProduccion = variables.NODE_ENV === 'production';

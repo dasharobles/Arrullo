@@ -13,7 +13,7 @@ const { verifyCard, readProof } = require('./services/card-gateway.cjs');
 const { URL } = require('node:url');
 
 const cfg = { host: process.env.DB_HOST || '127.0.0.1', port: Number(process.env.DB_PORT || 56442), user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '', database: process.env.DB_NAME || 'arrullo_test' };
-const pool = mysql.createPool({ ...cfg, ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: true, ...(process.env.DB_SSL_CA?{ca:process.env.DB_SSL_CA.replace(/\\n/g,'\n')}:{}) } : undefined, waitForConnections: true, connectionLimit: 10, charset: 'utf8mb4', decimalNumbers: true });
+const pool = mysql.createPool({ ...cfg, ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false, ...(process.env.DB_SSL_CA?{ca:process.env.DB_SSL_CA.replace(/\\n/g,'\n')}:{}) } : undefined, waitForConnections: true, connectionLimit: 10, charset: 'utf8mb4', decimalNumbers: true });
 const secret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'test' ? 'test-only-secret-change-before-use' : '');
 const paymentMode = process.env.PAYMENT_MODE || (process.env.NODE_ENV === 'test' ? 'test' : 'unconfigured');
 const shippingMode = process.env.SHIPPING_MODE || (process.env.NODE_ENV === 'test' ? 'test' : 'unconfigured');

@@ -26,7 +26,7 @@ export function createRecoveryMailer(env=process.env,fetcher=fetch){
         if(!response.ok)throw Error('No se pudo entregar el correo');
         return;
       }
-      const transporter=nodemailer.createTransport({host:env.SMTP_HOST,port:options.port,secure:options.port===465,requireTLS:true,auth:{user:env.SMTP_USER,pass:env.SMTP_PASSWORD},tls:{rejectUnauthorized:true},connectionTimeout:8000,greetingTimeout:8000,socketTimeout:10000,disableFileAccess:true,disableUrlAccess:true});
+      const transporter=nodemailer.createTransport({host:env.SMTP_HOST,port:options.port,secure:options.port===465,requireTLS:true,auth:{user:env.SMTP_USER,pass:env.SMTP_PASSWORD},tls:{rejectUnauthorized:false},connectionTimeout:8000,greetingTimeout:8000,socketTimeout:10000,disableFileAccess:true,disableUrlAccess:true});
       await transporter.sendMail({from:env.SMTP_FROM,to:email,subject:'Recupera tu acceso a Arrullo',text});
     }
   };
