@@ -27,7 +27,7 @@ pool.getConnection = async () => {
   const conn = await rawGetConn();
   const raw = conn.connection || conn;
   if (!raw._noAnsi) {
-    await conn.query("SET SESSION sql_mode = REPLACE(@@sql_mode, 'ANSI_QUOTES', '')");
+    await conn.query("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
     raw._noAnsi = true;
   }
   return conn;
