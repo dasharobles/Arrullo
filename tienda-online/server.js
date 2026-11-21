@@ -19,9 +19,21 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   charset: 'utf8mb4',
-  decimalNumbers: true,
-  initSql: ["SET SESSION sql_mode = REPLACE(@@sql_mode, 'ANSI_QUOTES', '')"]
+  decimalNumbers: true
 });
+
+const rawGetConn = pool.getConnection.bind(pool);
+pool.getConnection = async () => {
+  const conn = await rawGetConn();
+  const raw = conn.connection || conn;
+  if (!raw._noAnsi) {
+    await conn.query("SET SESSION sql_mode = REPLACE(@@sql_mode, 'ANSI_QUOTES', '')");
+    raw._noAnsi = true;
+  }
+  return conn;
+};
+pool.query = async (...args) => { const c = await pool.getConnection(); try { return await c.query(...args); } finally { c.release(); } };
+pool.execute = async (...args) => { const c = await pool.getConnection(); try { return await c.execute(...args); } finally { c.release(); } };
 const secret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'test' ? 'test-only-secret-change-before-use' : '');
 const paymentMode = process.env.PAYMENT_MODE || (process.env.NODE_ENV === 'test' ? 'test' : 'unconfigured');
 const shippingMode = process.env.SHIPPING_MODE || (process.env.NODE_ENV === 'test' ? 'test' : 'unconfigured');
