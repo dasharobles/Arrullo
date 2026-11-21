@@ -41,7 +41,7 @@ async function route(req, res) {
   if (method === 'GET' && path === '/api/postal-codes') { const cp=String(url.searchParams.get('cp')||''); if(!validZip(cp))return fail(400,'Escribe un código postal de cinco dígitos'); const [rows]=await pool.execute('SELECT postal_code postalCode,municipality,locality,base_shipping_rate baseShippingRate FROM sinaloa_postal_codes WHERE postal_code=? AND serviceable=1',[cp]); if(!rows.length)return fail(404,'Ese código postal no aparece en la cobertura registrada de Sinaloa'); return send(res,200,rows[0]); }
   if(method==='GET'&&path==='/api/auth/password/status')return send(res,200,await recoveryCall(process.env.AUTH_SERVICE_URL,'status'));
   if(method==='POST'&&['/api/auth/password/request','/api/auth/password/reset'].includes(path)){const input=await body(req);const result=await recoveryCall(process.env.AUTH_SERVICE_URL,path.endsWith('/request')?'request':'reset',input);if(path.endsWith('/reset')&&result.accountEmail)await pool.execute('INSERT INTO session_revocations(email,revoked_before) VALUES(?,?) ON DUPLICATE KEY UPDATE revoked_before=VALUES(revoked_before)',[result.accountEmail,Date.now()]);return send(res,200,{message:result.message});}
-  if(method==='GET'&&path==='/api/account/history'){const user=auth(req,['customer']);const [[active]]=await pool.execute('SELECT id FROM users WHERE id=? AND status="active"',[user.sub]);if(!active)fail(401,'La sesión ya no está disponible');return send(res,200,await purchaseHistory(pool,user.sub,Number(url.searchParams.get('page')||1)));}
+  if(method==='GET'&&path==='/api/account/history'){const user=auth(req,['customer']);const [[active]]=await pool.execute('SELECT id FROM users WHERE id=? AND status=\'active\'',[user.sub]);if(!active)fail(401,'La sesión ya no está disponible');return send(res,200,await purchaseHistory(pool,user.sub,Number(url.searchParams.get('page')||1)));}
   if (method === 'POST' && path === '/api/auth/register') {
     const b = await body(req); if (process.env.AUTH_SERVICE_URL) { const x=await callLoginService(process.env.AUTH_SERVICE_URL,'registro',{nombreUsuario:b.username,contrasena:b.password,email:b.email,nombreCompleto:b.fullName}),role=x.rol==='ADMIN'?'admin':'customer',email=x.email||`${x.nombreUsuario}@arrullo.local`; const [found]=await pool.execute('SELECT id FROM users WHERE email=?',[email]); let uid=found[0]?.id; if(!uid){const [r]=await pool.execute('INSERT INTO users(name,email,password_hash,role) VALUES(?,?,?,?)',[x.nombreCompleto||x.nombreUsuario,email,hashPassword(crypto.randomBytes(32).toString('hex')),role]);uid=r.insertId;} return send(res,201,{user:{id:uid,name:x.nombreCompleto||x.nombreUsuario,email,role,username:x.nombreUsuario},token:token({id:uid,role})}); }
     if (!b.name && b.fullName) b.name=b.fullName; if (!b.name || !/^\S+@\S+\.\S+$/.test(b.email || '') || (b.password || '').length < 8) return fail(400, 'Nombre, correo válido y contraseña de al menos 8 caracteres requeridos');
@@ -53,12 +53,12 @@ async function route(req, res) {
     await pool.execute('UPDATE users SET failed_attempts=0 WHERE id=?', [u.id]); return send(res, 200, { user: { id: u.id, name: u.name, email: u.email, role: u.role }, token: token(u) });
   }
   if(method==='GET'&&path==='/api/auth/me'){
-    const session=auth(req);const [[user]]=await pool.execute('SELECT id,name,email,role FROM users WHERE id=? AND status="active"',[session.sub]);
+    const session=auth(req);const [[user]]=await pool.execute('SELECT id,name,email,role FROM users WHERE id=? AND status=\'active\'',[session.sub]);
     if(!user||user.role!==session.role)return fail(401,'La sesión cambió. Inicia sesión nuevamente.');
     return send(res,200,{user});
   }
   if (method === 'GET' && path === '/api/admin/me') {
-    const u=auth(req,['admin']); const [[user]]=await pool.execute('SELECT id,name,email,role FROM users WHERE id=? AND status="active" AND role="admin"',[u.sub]);
+    const u=auth(req,['admin']); const [[user]]=await pool.execute('SELECT id,name,email,role FROM users WHERE id=? AND status=\'active\' AND role="admin"',[u.sub]);
     if(!user)return fail(403,'Cuenta administrativa no disponible'); return send(res,200,{user});
   }
   if (method === 'GET' && path === '/api/admin/inventory') { auth(req,['admin']); return send(res,200,await administracion.inventario()); }
@@ -69,7 +69,7 @@ async function route(req, res) {
   }
   if (method === 'GET' && path === '/api/account') {
     const user = auth(req,['customer']);
-    const [[profile]] = await pool.execute('SELECT id,name,email,phone,role,created_at FROM users WHERE id=? AND status="active"', [user.sub]);
+    const [[profile]] = await pool.execute('SELECT id,name,email,phone,role,created_at FROM users WHERE id=? AND status=\'active\'', [user.sub]);
     if (!profile) return fail(404, 'Cuenta no encontrada');
     const history=await purchaseHistory(pool,user.sub);
     const shippingUrl=String(process.env.SHIPPING_SERVICE_URL||'').replace(/\/$/,''),serviceKey=process.env.SHIPPING_SERVICE_API_KEY||'';
